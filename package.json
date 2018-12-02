@@ -1,0 +1,37 @@
+{
+  "name": "bomradar",
+  "version": "0.1.0",
+  "description": "BOM Radar Component",
+  "module": "dist/esm/index.js",
+  "main": "dist/index.js",
+  "types": "dist/types/components.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "stencil build",
+    "start": "stencil build --dev --watch --serve",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@stencil/core": "~0.16.0",
+    "@types/cheerio": "^0.22.9",
+    "cheerio": "^1.0.0-rc.2",
+    "date-fns": "^1.29.0",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lingomat/bomradar.git"
+  },
+  "author": "Mat Bettinson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Lingomat/bomradar"
+  },
+  "homepage": "https://github.com/Lingomat/bomradar"
+}
