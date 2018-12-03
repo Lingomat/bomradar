@@ -2,14 +2,11 @@
 
 ## BOM Radar
 
-This is a quick 'n dirty rendition of the Australian Bureau of Meteorologies' weather radar viewer as a web component.
+This is weather radar viewer based on the data from the Australian Bureau of Meteorology.
 
-It was motivated by wanting to build the BOM radar into small dedicated displays, e.g. as Raspberry Pi and a little LCD, without all of the extraneous cruft of the BOM radar loop viewer.
+It was motivated by wanting to build the BOM radar into small dedicated displays, e.g. as Raspberry Pi and a little LCD, without all of the extraneous cruft of the BOM website radar viewer. It is not intended to be used on public web sites. I don't work for the BOM. 
 
-As a web component it is ridiculously easy to integrate with any web site, regardless of JavaScript frameworks. Unlike the BOM's 1990s-tech viewer, it does not rely on refreshing and a server side script to provide a list of frames. It guesses when the next frame might be available and fetches continuously.
-A Canvas is used to render the animated images and the component supports resizing.
-
-It's possible to cut off the overlays of the images. This is only appropriate if you have acknowledged the BOM elsewhere on a public page, or it's just being used for a private project.
+The web component may be integrated into any web view regardless of JavaScript frameworks. Unlike the BOM's 1990s-tech viewer, it does not rely on refreshing and a server side scripts to provide a list of frames. It calculates when the next frame will be available and fetches continuously. It supports loops of a longer length than the BOM viewer. A Canvas is used to render the animated images and the component supports resizing.
 
 ## Using this component
 
@@ -24,13 +21,43 @@ It's possible to cut off the overlays of the images. This is only appropriate if
 - height = as above
 - product = product id for the particular weather radar
 - imagecount = number of images to loop
+- disable-copyright = boolean flag, removes strap at the top. 
+- disable-text = boolean flag, removes time/location text at bottom (you will also lose some radar data)
 
-Product is the only thing you really need to specify. Unless you want a radar of Darwin.
+```
+<bomradar-component width="480" height="480" product="IDR632" imagecount="15" disable-text></bomradar-component>
+```
 
-To get product id, find the radar web page such as http://www.bom.gov.au/products/IDR632.loop.shtml
+Product is the only thing you really need to specify. Unless you want a radar of Darwin. To get product id, find the radar web page such as http://www.bom.gov.au/products/IDR632.loop.shtml
 The URL shows the id, here 'IDR632'.
 
 The component will try and load as many images as specified in imagecount attribute, but usually the BOM only keeps ten. However if you set imagecount to be larger than 10, it will keep adding future images to the loop until it is of length imagecount.
+
+### API
+
+There is a small API for the component.
+
+- setOverlays(string[])
+- stop()
+- play()
+- setFPS(number) for animation FPS, default = 5
+- setPauseTime(number) for pause after each loop in seconds, default = 1
+
+By default, bomradar displays the background and locations overlays. However you can also specify any of 'background', 'locations', 'waterways', 'topography' with setOverlays by passing an array of overlay names.
+
+The stop() function stops the animation and stops fetching additional frames. This is useful for devices going into sleep mode etc.
+
+The play() function re-starts the compnent, re-initializing the radar images and re-starting the animation. Returns a promise which resolves when the component has initialized.
+
+The following is an example of using the web component API.
+
+```
+let bomradar = document.querySelector('bomradar-component')
+bomradar.componentOnReady().then(() => {
+  bomradar.setOverlays(['background', 'locations'])
+  bomradar.setFPS(5)
+})
+```
 
 ### Demo
 
@@ -39,17 +66,17 @@ Just clone it, npm i, npm start. bish bash bosh.
 ### To-Do
 
 - Tidy up and publish to NPM for easy distribution
-- Expose the settings for overlays, animation timing, play/pause perhaps.
-- Expose the settings to cut off the overlays*
-- Eliminate console debug spam 
-
-* I think I'd rather let someone change the source. I want no part of anyone thieving BOM services for public web sites without attribution.
+- Add the observations overlay (this changes over time)
 
 ### Future
 
 - Do optical flow analysis and then morph between frames - lol, right.
 
 Seriously, something basic to indicate impending rain would be nice, since that's what we use the radar for anyway.
+
+### Changes
+
+0.1.1: Added switches for disabling the copyright and text straps. Added API. Added play/stop functionality and setting animation times and inter loop pause times.
 
 ### Shoutz
 

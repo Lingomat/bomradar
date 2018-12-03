@@ -13,12 +13,21 @@ import '@stencil/core';
 export namespace Components {
 
   interface BomradarComponent {
+    'disableCopyright': boolean;
+    'disableText': boolean;
     'height': number;
     'imagecount': string;
+    'play': () => Promise<void>;
     'product': string;
+    'setFPS': (fps: number) => void;
+    'setOverlays': (ovl: string[]) => void;
+    'setPauseTime': (t: number) => void;
+    'stop': () => void;
     'width': number;
   }
   interface BomradarComponentAttributes extends StencilHTMLAttributes {
+    'disableCopyright'?: boolean;
+    'disableText'?: boolean;
     'height'?: number;
     'imagecount'?: string;
     'product'?: string;

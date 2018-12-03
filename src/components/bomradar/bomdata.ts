@@ -56,28 +56,13 @@ export class BOMData {
         success = true
         break
       } catch(e) {
-        console.log('fetch error', e)
         trydate = subMinutes(trydate, 6)
       }
     }
     if (!success) {
-      throw new Error("Could not fetch a valid image after " + retries.toString() + " retries!")
+      throw new Error("bomradar: could not fetch a valid image after " + retries.toString() + " retries!")
     }
     this.lastUpdateDate = trydate
-    // now let's get the older images
-    // let proms: Promise<{d: Date, i: HTMLImageElement}>[] = []
-    // for (let x = this.howmany - 1; x > 0 ; --x) {  
-    //   console.log('x', x, 6 * x)
-    //   let ld = subMinutes(trydate, 6 * x)
-    //   proms.push(new Promise((resolve) => {
-    //     let fn = this.makeFilenameFromDate(ld)
-    //     this.fetchImage(fn)
-    //     .then((img) => {
-    //       resolve({d: ld, i: img})
-    //     })
-    //   }))
-    // }
-    //let res = await Promise.all(proms)
     let hm: number = 1
     let imgs: {d: Date, i: HTMLImageElement}[] = []
     for (let x = 1; x < this.howmany -1; ++x) {
@@ -93,11 +78,10 @@ export class BOMData {
       }
     }
     if (hm < this.howmany) {
-      console.log('we only have ', hm) // it seems this ends up being 10
+      console.log('bomradar: Can only fetch', hm, 'images initially.') // it seems this ends up being 10
     }
     imgs.reverse()
     this.images = [...imgs, {d: trydate, i: firstimage}]
-    //this.images = [...res, {d: trydate, i: firstimage}]
   }
   getImages(): {i: HTMLImageElement, d: Date}[] {
     return this.images
@@ -123,10 +107,9 @@ export class BOMData {
     try {
       img = await this.fetchImage(fn)
     } catch {
-      console.log('no image yet')
+      console.log('bomradar: no image yet.')
       return // will not try this again until the next minute
     }
-    console.log('got a new image!')
     this.lastUpdateDate = speculativeDate
     // we collect as many images as the specified limit, trashing them after that
     if (this.images.length === this.howmany) {
@@ -134,5 +117,4 @@ export class BOMData {
     }
     this.images.push({i: img, d: speculativeDate})
   }
-
 }

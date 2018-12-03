@@ -9,7 +9,15 @@
 </head>
 <body>
 
-  <bomradar-component product="IDR632" imagecount="11" width="480" height="480"></bomradar-component>
+  <bomradar-component product="IDR632" imagecount="11" width="512" height="512"></bomradar-component>
+
+  <SCRIPT LANGUAGE="JavaScript" type="text/javascript">
+  (async function() {
+    let bomradar= document.querySelector('bomradar-component')
+    await bomradar.componentOnReady()
+    bomradar.setOverlays(['background', 'locations'])
+  })()
+  </SCRIPT>
 
 </body>
 </html>

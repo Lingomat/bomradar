@@ -1,6 +1,6 @@
 {
   "name": "bomradar",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "BOM Radar Component",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
